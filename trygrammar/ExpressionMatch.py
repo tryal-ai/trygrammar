@@ -51,11 +51,11 @@ functions.set_inner(MatchAlternation([
 ]))
 
 expression = MatchAlternation([
-    #brackets,
-    #functions,
-    #power,
-    #multiplyDivide,
+    functions,
+    power,
+    multiplyDivide,
     addSubtract,
+    brackets,
     term
 ])
 
