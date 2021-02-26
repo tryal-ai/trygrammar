@@ -38,7 +38,7 @@ class AddSubtractMatch:
     def __init__(self, innerMatch):
         self.matcher = MatchJoin([
             innerMatch,
-            MatchQuantity(AddSubTail(innerMatch), 1)
+            MatchQuantity(AddSubTail(innerMatch), 0)
         ])
 
     def parser(self, body : str, hard_fail = True):
@@ -51,6 +51,9 @@ class AddSubtractMatch:
         if config.verbose:
             print(f"Matched {body} from root {config.previous} to AddSubtractMatcher")
             config.previous = "AddSubtractMatcher"
+        
+        if len(result[0][1]) == 0:
+            return [result[0][0], result[1]]
         terms = [result[0][0], *result[0][1]]
         return [{
             'terms': terms,

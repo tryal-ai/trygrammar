@@ -40,7 +40,7 @@ class MultiplyDivideMatch:
     def __init__(self, innerMatch):
         self.matcher = MatchJoin([
             innerMatch,
-            MatchQuantity(MultiplyDivideTail(innerMatch), 1)
+            MatchQuantity(MultiplyDivideTail(innerMatch), 0)
         ])
 
     def parser(self, body : str, hard_fail = True):
@@ -53,6 +53,8 @@ class MultiplyDivideMatch:
         if config.verbose:
             print(f"Matched {body} from root {config.previous} to MultiplyDivideMatch")
             config.previous = "MultiplyDivideMatch"
+        if len(result[0][1]) == 0:
+            return [result[0][0], result[1]]
         terms = [result[0][0], *result[0][1]]
 
         return [{

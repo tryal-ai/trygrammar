@@ -27,36 +27,12 @@ multiplyDivide = MultiplyDivideMatch(MatchAlternation([
     ])
 )
 
-addSubtract = AddSubtractMatch(MatchAlternation([
-    brackets,
-    functions,
-    power,
-    multiplyDivide,
-    term
-]))
+addSubtract = AddSubtractMatch(multiplyDivide)
 
-brackets.set_inner(MatchAlternation([
-    functions,
-    power,
-    multiplyDivide,
-    addSubtract,
-    term
-]))
+brackets.set_inner(addSubtract)
 
-functions.set_inner(MatchAlternation([
-    power,
-    multiplyDivide,
-    addSubtract,
-    term
-]))
+functions.set_inner(addSubtract)
 
-expression = MatchAlternation([
-    functions,
-    power,
-    multiplyDivide,
-    addSubtract,
-    brackets,
-    term
-])
+expression = addSubtract
 
 term.set_power_match(expression)
