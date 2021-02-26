@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='tryal',
+setup(name='trygrammar',
       version=open('VERSION').read(),
       description='Tryal.AI Grammar',
       author='Adam Green',
