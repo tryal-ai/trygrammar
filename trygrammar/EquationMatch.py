@@ -21,13 +21,16 @@ class EquationTail:
             config.previous = "EquationTail"
         
         return [result[0][1], result[1]]
+    
+    def __str__(self):
+        return str(self.matcher)
 
 
 class EquationMatch:
     def __init__(self):
         self.matcher = MatchJoin([
             expression,
-            MatchQuantity(EquationTail(), 1)
+            MatchQuantity(EquationTail(), 0)
         ])
     
     def parser(self, body : str, hard_fail = True):
@@ -41,6 +44,9 @@ class EquationMatch:
             print(f"Matched {body} from root {config.previous} to EquationMatch")
             config.previous = "EquationMatch"
         
+        if len(result[0][1]) == 0:
+            return [result[0][0], result[1]]
+
         terms = [result[0][0], *result[0][1]]
 
         return [{

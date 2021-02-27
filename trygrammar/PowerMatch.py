@@ -1,4 +1,5 @@
 from mnkytw import LiteralMatch, MatchJoin
+from trygrammar.LeastMatchingExponent import LeastMatchingExponent
 import config
 
 class PowerMatch:
@@ -6,7 +7,7 @@ class PowerMatch:
         self.matcher = MatchJoin([
             innerMatch,
             LiteralMatch("^"),
-            innerMatch
+            LeastMatchingExponent(innerMatch)
         ])
     
     def parser(self, body : str, hard_fail = True):

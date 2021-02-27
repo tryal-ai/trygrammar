@@ -1,4 +1,5 @@
 from mnkytw import LiteralMatch, MatchAlternation, MatchJoin
+from trygrammar.LeastMatchingExponent import LeastMatchingExponent
 import config
 
 ## Greek Symbols
@@ -13,7 +14,7 @@ class GreekSymbolMatch:
                 MatchJoin([
                     MatchAlternation([Pi, Epsilon, Theta]),
                     LiteralMatch("^"),
-                    powerMatch
+                    LeastMatchingExponent(powerMatch)
                 ]),
                 MatchAlternation([Pi, Epsilon, Theta]),
             ])
@@ -35,7 +36,7 @@ class GreekSymbolMatch:
                 'val': result[0][0],
                 'power': result[0][2],
                 'type': 'greek'
-            }]
+            }, result[1]]
         return [{
             'val': result[0],
             'type': 'greek'
@@ -46,7 +47,7 @@ class GreekSymbolMatch:
                 MatchJoin([
                     MatchAlternation([Pi, Epsilon, Theta]),
                     LiteralMatch("^"),
-                    powerMatch
+                    LeastMatchingExponent(powerMatch)
                 ]),
                 MatchAlternation([Pi, Epsilon, Theta])
             ])

@@ -44,15 +44,11 @@ class MultiplyDivideMatch:
         ])
 
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to MultiplyDivideMatch")
-            config.previous = "MultiplyDivideMatch"
         result = self.matcher.parser(body, hard_fail)
+        
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to MultiplyDivideMatch")
-            config.previous = "MultiplyDivideMatch"
+        
         if len(result[0][1]) == 0:
             return [result[0][0], result[1]]
         terms = [result[0][0], *result[0][1]]

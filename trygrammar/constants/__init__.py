@@ -2,7 +2,6 @@ from mnkytw import MatchAlternation
 import config
 from trygrammar.constants.MultiVariableTermMatch import MultiVariableTermMatch
 from trygrammar.constants.ConstantCoeffTermMatch import ConstantCoeffTermMatch
-from trygrammar.constants.ConstantFractionMatch import NegativeConstantFractionMatch
 from trygrammar.constants.SubstitutionMatch import SubstitutionMatch
 from trygrammar.constants.GreekSymbolMatch import GreekSymbolMatch
 
@@ -11,14 +10,8 @@ from trygrammar.constants.GreekSymbolMatch import GreekSymbolMatch
 class TermMatch:
     def __init__(self, powerMatch):
         self.matcher = MatchAlternation([
-            #match greek symbol
-            GreekSymbolMatch(powerMatch),
-            #xyz
-            MultiVariableTermMatch(),
-            #2xyz
+            # Everything
             ConstantCoeffTermMatch(powerMatch),
-            #2/3 or 2 or -3 or pi
-            NegativeConstantFractionMatch(powerMatch),
             ## example such as !a
             SubstitutionMatch(),
         ])
@@ -31,14 +24,8 @@ class TermMatch:
 
     def set_power_match(self, powerMatch):
         self.matcher = MatchAlternation([
-            #match greek symbol
-            GreekSymbolMatch(powerMatch),
-            #xyz
-            MultiVariableTermMatch(),
-            #2xyz
+            # Everything
             ConstantCoeffTermMatch(powerMatch),
-            #2/3 or 2 or -3 or pi
-            NegativeConstantFractionMatch(powerMatch),
             ## example such as !a
             SubstitutionMatch(),
         ])

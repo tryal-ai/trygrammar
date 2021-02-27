@@ -1,49 +1,36 @@
 from mnkytw import MatchAlternation, MatchQuantity, MatchJoin
 import config
-from trygrammar.constants.ConstantFractionMatch import NegativeConstantFractionMatch
-from trygrammar.constants.VariableMatch import VariableMatch
-from trygrammar.constants.GreekSymbolMatch import GreekSymbolMatch
+from trygrammar.constants.ConstantMatch import ConstantMatch
+from trygrammar.constants.MultiVariableTermMatch import MultiVariableTermMatch
 
 class ConstantCoeffTermMatch:
     def __init__(self, powerMatch):
         self.matcher = MatchJoin([
-            NegativeConstantFractionMatch(powerMatch),
-            MatchAlternation([
-                MatchQuantity(GreekSymbolMatch(powerMatch), 1),
-                MatchQuantity(VariableMatch(powerMatch), 1)
-            ])
+            MatchQuantity(ConstantMatch(), 0, 1),
+            MatchQuantity(MultiVariableTermMatch(powerMatch), 0, 1)
         ])
 
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to ConstantCoeffTermMatch")
-            config.previous = "ConstantCoeffTermMatch"
         result = self.matcher.parser(body, hard_fail)
+        
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to ConstantCoeffTermMatch")
-            config.previous = "ConstantCoeffTermMatch"
-        if result[0][1][0]['type'] == 'greek':
-            return [{
-                'coeff': result[0][0],
-                'val': result[0][1][0]['val'],
-                'type': 'greek'
-            }, result[1]]
+        
+        if len(result[0][0]) == 0 and len(result[0][1]) == 0:
+            return None
+        if len(result[0][1]) == 0:
+            return [result[0][0][0], result[1]]
+        if len(result[0][0]) == 0:
+            return [result[0][1][0], result[1]]
 
-        return [{
-            'coeff': result[0][0],
-            'vars': result[0][1],
-            'type': 'term'
-        }, result[1]] 
+        result[0][1][0]['coeff'] = result[0][0]
+        return [result[0][1][0], result[1]]
+        
     
     def set_power_match(self, powerMatch):
         self.matcher = MatchJoin([
-            NegativeConstantFractionMatch(powerMatch),
-            MatchAlternation([
-                MatchQuantity(GreekSymbolMatch(powerMatch), 1),
-                MatchQuantity(VariableMatch(powerMatch), 1)
-            ])
+            MatchQuantity(ConstantMatch(), 0, 1),
+            MatchQuantity(MultiVariableTermMatch(powerMatch), 0, 1)
         ])
 
     def __str__(self):
