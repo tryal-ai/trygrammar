@@ -1,5 +1,5 @@
 from mnkytw import MatchJoin, LiteralMatch, MatchAlternation, MatchQuantity
-import config
+ 
 
 class AddSubTail:
     def __init__(self, innerMatch):
@@ -12,15 +12,9 @@ class AddSubTail:
         ])
 
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to AddSubtractTail")
-            config.previous = "AddSubtractTail"
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to AddSubtractTail")
-            config.previous = "AddSubtractTail"
         
         symbol = result[0][0]
         term = result[0][1]
@@ -42,15 +36,9 @@ class AddSubtractMatch:
         ])
 
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to AddSubtractMatcher")
-            config.previous = "AddSubtractMatcher"
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to AddSubtractMatcher")
-            config.previous = "AddSubtractMatcher"
         
         if len(result[0][1]) == 0:
             return [result[0][0], result[1]]

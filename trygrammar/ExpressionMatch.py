@@ -1,5 +1,5 @@
 from mnkytw import MatchAlternation
-import config
+ 
 from trygrammar.constants import TermMatch
 from trygrammar.PowerMatch import PowerMatch
 from trygrammar.BracketsMatch import BracketsMatch

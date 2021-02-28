@@ -1,5 +1,5 @@
 from mnkytw import MatchAlternation
-import config
+ 
 from trygrammar.constants.MultiVariableTermMatch import MultiVariableTermMatch
 from trygrammar.constants.ConstantCoeffTermMatch import ConstantCoeffTermMatch
 from trygrammar.constants.SubstitutionMatch import SubstitutionMatch
@@ -17,9 +17,7 @@ class TermMatch:
         ])
     
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Matching {body} from root {config.previous} to TermMatch")
-            config.previous = "TermMatch"
+         
         return self.matcher.parser(body, hard_fail)
 
     def set_power_match(self, powerMatch):

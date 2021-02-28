@@ -1,6 +1,6 @@
 from mnkytw import LiteralMatch, MatchAlternation, MatchJoin
 from trygrammar.LeastMatchingExponent import LeastMatchingExponent
-import config
+ 
 
 ## Greek Symbols
 Pi = LiteralMatch("pi")
@@ -22,15 +22,11 @@ class GreekSymbolMatch:
             self.matcher = MatchAlternation([Pi, Epsilon, Theta])
 
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to GreekSymbolMatch")
-            config.previous = "GreekSymbolMatch"
+         
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to GreekSymbolMatch")
-            config.previous = "GreekSymbolMatch"
+         
         if type(result[0]) is list:
             return [{
                 'val': result[0][0],

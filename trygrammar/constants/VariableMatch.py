@@ -1,6 +1,6 @@
 from mnkytw import RegexMatch, MatchAlternation, MatchJoin, LiteralMatch
 from trygrammar.LeastMatchingExponent import LeastMatchingExponent
-import config
+ 
 
 ## Variable Symbols
 class VariableMatch:
@@ -18,15 +18,11 @@ class VariableMatch:
             self.matcher = RegexMatch(r"[a-zA-Z]")
 
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to VariableMatch")
-            config.previous = "VariableMatch"
+         
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to VariableMatch")
-            config.previous = "VariableMatch"
+         
         if type(result[0]) is list:
             return [{
                 'val': result[0][0],

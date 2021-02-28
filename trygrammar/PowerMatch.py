@@ -1,6 +1,6 @@
 from mnkytw import LiteralMatch, MatchJoin
 from trygrammar.LeastMatchingExponent import LeastMatchingExponent
-import config
+ 
 
 class PowerMatch:
     def __init__(self, innerMatch):
@@ -11,15 +11,11 @@ class PowerMatch:
         ])
     
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to PowerMatch")
-            config.previous = "PowerMatch"
+         
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to PowerMatch")
-            config.previous = "PowerMatch"
+         
         
         mantissa = result[0][0]
         exponent = result[0][2]

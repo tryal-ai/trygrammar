@@ -1,5 +1,5 @@
 from mnkytw import MatchQuantity, MatchAlternation
-import config
+ 
 from trygrammar.constants.VariableMatch import VariableMatch
 from trygrammar.constants.GreekSymbolMatch import GreekSymbolMatch
 from trygrammar.symbols.UnaryFunctionSymbolsMatch import UnaryFunctionSymbolsMatch
@@ -22,15 +22,11 @@ class MultiVariableTermMatch:
         ]), 1)
     
     def parser(self, body : str, hard_fail = True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to MultiVariableTermMatch")
-            config.previous = "MultiVariableTermMatch"
+         
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to MultiVariableTermMatch")
-            config.previous = "MultiVariableTermMatch"
+         
         
         test_for_function = reverse_match(result[0])
         if test_for_function:

@@ -1,5 +1,5 @@
 from mnkytw import MatchJoin, LiteralMatch, MatchAlternation, MatchQuantity
-import config
+ 
 
 class MultiplyDivideTail:
     def __init__(self, innerMatch):
@@ -11,15 +11,11 @@ class MultiplyDivideTail:
             innerMatch
         ])
     def parser(self, body : str, hard_fail : True):
-        if config.verbose:
-            print(f"Match {body} from root {config.previous} to MultiplyDivideTail")
-            config.previous = "MultiplyDivideTail"
+         
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
-        if config.verbose:
-            print(f"Matched {body} from root {config.previous} to MultiplyDivideTail")
-            config.previous = "MultiplyDivideTail"
+         
         symbol = result[0][0]
         term = result[0][1]
         if symbol == "/":

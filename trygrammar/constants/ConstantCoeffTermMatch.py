@@ -1,5 +1,5 @@
 from mnkytw import MatchAlternation, MatchQuantity, MatchJoin
-import config
+ 
 from trygrammar.constants.ConstantMatch import ConstantMatch
 from trygrammar.constants.MultiVariableTermMatch import MultiVariableTermMatch
 

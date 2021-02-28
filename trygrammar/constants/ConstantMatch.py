@@ -1,6 +1,6 @@
 from mnkytw import MatchAlternation
 
-import config
+ 
 from trygrammar.constants.RealMatch import RealMatch
 from trygrammar.constants.IntegerMatch import IntegerMatch
 
