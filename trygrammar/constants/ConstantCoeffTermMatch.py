@@ -23,7 +23,7 @@ class ConstantCoeffTermMatch:
         if len(result[0][0]) == 0:
             return [result[0][1][0], result[1]]
 
-        result[0][1][0]['coeff'] = result[0][0]
+        result[0][1][0]['coeff'] = result[0][0][0]
         return [result[0][1][0], result[1]]
         
     
