@@ -45,3 +45,5 @@ multiplyDivide = MatchAlternation([
 ])
 
 addSubtract.set_inner_matcher(multiplyDivide)
+
+expression = addSubtract
