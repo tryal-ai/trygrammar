@@ -17,7 +17,10 @@ class GreekSymbolMatch:
                     LiteralMatch("^"),
                     LeastMatchingExponent(powerMatch)
                 ]),
-                MatchAlternation([Pi, Epsilon, Theta]),
+                MatchJoin([
+                    LiteralMatch("#"),
+                    MatchAlternation([Pi, Epsilon, Theta])
+                ])
             ])
         else:
             self.matcher = MatchAlternation([Pi, Epsilon, Theta])
@@ -28,25 +31,30 @@ class GreekSymbolMatch:
         if not result:
             return result
          
-        if type(result[0]) is list:
+        if len(result[0]) > 2:
             return [{
                 'val': result[0][1],
                 'power': result[0][3],
                 'type': 'greek'
             }, result[1]]
+        
         return [{
-            'val': result[0],
+            'val': result[0][1],
             'type': 'greek'
         }, result[1]]
 
     def set_power_match(self, powerMatch):
         self.matcher = MatchAlternation([
                 MatchJoin([
+                    LiteralMatch("#"),
                     MatchAlternation([Pi, Epsilon, Theta]),
                     LiteralMatch("^"),
                     LeastMatchingExponent(powerMatch)
                 ]),
-                MatchAlternation([Pi, Epsilon, Theta])
+                MatchJoin([
+                    LiteralMatch("#"),
+                    MatchAlternation([Pi, Epsilon, Theta])
+                ])
             ])
 
     def __str__(self):
