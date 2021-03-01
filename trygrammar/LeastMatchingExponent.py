@@ -1,17 +1,19 @@
+from mnkytw import MatchAlternation
+from trygrammar.constants.RealMatch import RealMatch
+from trygrammar.constants.IntegerMatch import IntegerMatch
+from trygrammar.constants.ConstantCoeffTermMatch import ConstantCoeffTermMatch
+
 class LeastMatchingExponent:
     def __init__(self, innerMatch):
-        self.matcher = innerMatch
+        self.matcher = MatchAlternation([
+            RealMatch(),
+            IntegerMatch(),
+            ConstantCoeffTermMatch(self),
+            innerMatch
+        ])
     
     def parser(self, body : str, hard_fail = True):
-        for i in range(1, len(body) + 1):
-            sub_body = body[:i]
-            result = self.matcher.parser(sub_body, False)
-            if not result:
-                if i == len(body):
-                    return result
-                else:
-                    continue
-            return result
+        return self.matcher.parser(body, hard_fail)
     
     def __str__(self):
         return str(self.matcher)

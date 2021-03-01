@@ -1,5 +1,7 @@
 // Tryal
 
+TryGrammar = (Coordinate / Equation)
+
 Equation "equation"
     = L: Expression R: (EquationTail)* {
         if (R.length > 0) {
@@ -107,6 +109,15 @@ Brackets "brackets"
         };
     }
 
+Coordinate "coordinate"
+    = "(" L: (ConstantCoeffTerm) R: ("," A: (ConstantCoeffTerm) {
+        return A;
+    })+ ")" {
+        return {
+            points: [L, ...R],
+            type: 'coordinate'
+        }
+    }
 
 ConstantCoeffTerm "constant coefficient term"
     = C: (Constant)? T: (MultiVariableTerm)? {

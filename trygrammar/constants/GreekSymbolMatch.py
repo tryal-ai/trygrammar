@@ -1,5 +1,4 @@
 from mnkytw import LiteralMatch, MatchAlternation, MatchJoin
-from trygrammar.LeastMatchingExponent import LeastMatchingExponent
  
 
 ## Greek Symbols
@@ -15,7 +14,7 @@ class GreekSymbolMatch:
                     LiteralMatch("#"),
                     MatchAlternation([Pi, Epsilon, Theta]),
                     LiteralMatch("^"),
-                    LeastMatchingExponent(powerMatch)
+                    powerMatch
                 ]),
                 MatchJoin([
                     LiteralMatch("#"),
@@ -49,7 +48,7 @@ class GreekSymbolMatch:
                     LiteralMatch("#"),
                     MatchAlternation([Pi, Epsilon, Theta]),
                     LiteralMatch("^"),
-                    LeastMatchingExponent(powerMatch)
+                    powerMatch
                 ]),
                 MatchJoin([
                     LiteralMatch("#"),

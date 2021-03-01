@@ -1,5 +1,4 @@
 from mnkytw import RegexMatch, MatchAlternation, MatchJoin, LiteralMatch
-from trygrammar.LeastMatchingExponent import LeastMatchingExponent
  
 
 ## Variable Symbols
@@ -10,7 +9,7 @@ class VariableMatch:
                 MatchJoin([
                     RegexMatch(r"[a-zA-Z]"),
                     LiteralMatch("^"),
-                    LeastMatchingExponent(powerMatch)
+                    powerMatch
                 ]),
                 RegexMatch(r"[a-zA-Z]")
             ])
@@ -39,7 +38,7 @@ class VariableMatch:
             MatchJoin([
                 RegexMatch(r"[a-zA-Z]"),
                 LiteralMatch("^"),
-                LeastMatchingExponent(powerMatch)
+                powerMatch
             ]),
             RegexMatch(r"[a-zA-Z]")
         ])
