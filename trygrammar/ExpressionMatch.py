@@ -23,12 +23,7 @@ power = PowerMatch(MatchAlternation([
 
 multiplyDivide = MatchAlternation([
     ImplicitMultiplyMatch(
-        MatchAlternation([
-            power,
-            functions,
-            brackets,
-            term
-        ]),
+        term,
         MatchAlternation([
             power,
             functions,
