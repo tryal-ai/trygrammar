@@ -3,11 +3,11 @@ from trygrammar.LeastMatchingExponent import LeastMatchingExponent
  
 
 class PowerMatch:
-    def __init__(self, innerMatch):
+    def __init__(self, mantissaMatch, exponentMatch):
         self.matcher = MatchJoin([
-            innerMatch,
+            mantissaMatch,
             LiteralMatch("^"),
-            LeastMatchingExponent(innerMatch)
+            LeastMatchingExponent(exponentMatch)
         ])
     
     def parser(self, body : str, hard_fail = True):

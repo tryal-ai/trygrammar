@@ -8,15 +8,17 @@ from trygrammar.ImplicitMultiplyMatch import ImplicitMultiplyMatch
 from trygrammar.AddSubMatch import AddSubtractMatch
 from trygrammar.FunctionsMatch import FunctionsMatch
 
-brackets = BracketsMatch(None)
-functions = FunctionsMatch(None)
-term = TermMatch(None)
+addSubtract = AddSubtractMatch(None)
+brackets = BracketsMatch(addSubtract)
+functions = FunctionsMatch(addSubtract)
+term = TermMatch(addSubtract)
 
 # A power can either apply to a term, or to a bracket
 power = PowerMatch(MatchAlternation([
         brackets,
         functions
-    ]) 
+    ]),
+    addSubtract
 )
 
 multiplyDivide = MatchAlternation([
@@ -42,12 +44,4 @@ multiplyDivide = MatchAlternation([
     )
 ])
 
-addSubtract = AddSubtractMatch(multiplyDivide)
-
-brackets.set_inner(addSubtract)
-
-functions.set_inner(addSubtract)
-
-expression = addSubtract
-
-term.set_power_match(expression)
+addSubtract.set_inner_matcher(multiplyDivide)

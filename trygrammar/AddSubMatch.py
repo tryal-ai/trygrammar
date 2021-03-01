@@ -48,5 +48,11 @@ class AddSubtractMatch:
             'type': 'addition'
         }, result[1]]
 
+    def set_inner_matcher(self, innerMatch):
+        self.matcher = MatchJoin([
+            innerMatch,
+            MatchQuantity(AddSubTail(innerMatch), 0)
+        ])
+
     def __str__(self):
         return str(self.matcher)
