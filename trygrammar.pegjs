@@ -1,76 +1,110 @@
 // Tryal
 
-Equation = 
-    L: Operation "=" R:Equation {
-        return {
-            lhs: L,
-            rhs: R,
-            symbol: "=",
-            type: 'operation',
-        }
-    } / C: Operation { 
-        return C; 
-    }
-
-Expression
-    = O: (Function / AddSubtract / MultiplyDividePower / Brackets / ConstantCoeffTerm) {
-        return O;
-    }
-
-Function = 
-    F: UnaryFunctionSymbols "(" O: Operation ")" {
-        return {
-            symbol: F,
-            expression: O,
-            type: 'function',
-        }
-    }
-
-MultiplyDividePower 
-    = L: (Function / ConstantCoeffTerm / "(" O: Operation ")" { return {
-        ...O,
-        brackets: true,
-        }; })
-        S: ("*" / "/" / "^" / "") 
-        R: (ConstantCoeffTerm / "(" O: Operation ")" { return { 
-            ...O,
-            brackets: true, 
-        }; }) {
+Equation "equation"
+    = L: Expression R: (EquationTail)* {
+        if (R.length > 0) {
             return {
-                lhs: L,
-                symbol: S !== "" ? S : "x",
-                rhs: R,
-                type: 'operation',
+                expressions: [L, ...R],
+                type: 'equation'
             }
         }
-
-AddSubtract = L: (MultiplyDividePower / Function / ConstantCoeffTerm) S:("+" / "-") R: Operation {
-    return {
-        lhs: L,
-        rhs: R,
-        symbol: S,
-        type: 'operation',
+        return L;
     }
-} 
 
-Power = M: (Brackets / Function) "^" E: Expression {
-    
-}
-
-Function = S: UnaryFunctionSymbols "(" E: Expression ")" {
-    return {
-        symbol: S,
-        expression: E,
-        type: 'function'
+EquationTail "equation tail"
+    = "=" R: Expression {
+        return R;
     }
-}
 
-Brackets
+LeastMatchingExponent "least matching exponent"
+    = "^" E: (Real / Integer / ConstantCoeffTerm / Expression) {
+        return E;
+    }
+
+Expression "expression"
+    = L: Multiplication R: (AddSubtractTail)* {
+        if (R.length > 0) {
+            return {
+                terms: [L, ...R],
+                type: 'addition'
+            };
+        }
+        return L;
+    }
+
+AddSubtractTail "add-subtract tail"
+    = "+" T: Multiplication {
+        return T;
+    } / "-" T: Multiplication {
+        return {
+            val: T,
+            type: 'negation'
+        }
+    }
+
+Multiplication "multiplication"
+    = (ImplicitMultiply / MultiplyDivide)
+
+MultiplyDivide "multiply-divide"
+    = L: (Power / Brackets / Function / ConstantCoeffTerm) R: (MultiplyDivideTail)* {
+        if (R.length > 0) {
+            return {
+                terms: [L, ...R],
+                type: 'multiplication'
+            };
+        }
+        return L;
+    }
+
+MultiplyDivideTail "multiply-divide tail"
+    = "*" T: (Power / Brackets / Function / ConstantCoeffTerm) {
+        return T;
+    } / "/" T: (Power / Brackets / Function / ConstantCoeffTerm) {
+        return {
+            numer: { val: 1, type: 'integer' },
+            denom: T,
+            type: 'fraction'
+        };
+    }
+
+ImplicitMultiply "implicit multiply"
+    = C: (ConstantCoeffTerm) T: (Power / Function / Brackets)+ {
+        return {
+            terms: [C, ...T],
+            type: 'multiplication'
+        };
+    } / F: (Power / Function / Brackets) T: (Power / Function / Brackets)+ {
+        return {
+            terms: [F, ...T],
+            type: 'multiplication'
+        };
+    }
+
+
+Power "power"
+    = M: (Brackets / Function) E: LeastMatchingExponent {
+        return {
+            mantissa: M,
+            exponent: E,
+            type: 'power'
+        };
+    }
+
+Function "function"
+    = S: UnaryFunctionSymbols "(" E: Expression ")" {
+        return {
+            symbol: S,
+            expression: E,
+            type: 'function'
+        };
+    }
+
+Brackets "brackets"
     = "(" E: Expression ")" {
         return {
             expression: E,
             type: 'brackets'
-        }
+        };
     }
 
 
@@ -85,7 +119,7 @@ ConstantCoeffTerm "constant coefficient term"
         return {
             ...T,
             coeff: C
-        }
+        };
     }
 
 Constant "constant"
@@ -97,10 +131,9 @@ Constant "constant"
 MultiVariableTerm "multi-variable term"
     = V: (GreekSymbols / Variable)+ {
         return {
-            'vars': V,
-            'type': 'terms'
-        }
-
+            vars: V,
+            type: 'terms'
+        };
     }
 
 UnaryFunctionSymbols = 
@@ -120,20 +153,20 @@ UnaryFunctionSymbols =
 
 
 GreekSymbols "greek symbol"
-    = "#" S:("pi" / "epsilon" / "theta") "^" E: Expression {
+    = "#" S:("pi" / "epsilon" / "theta") E: LeastMatchingExponent {
         return {
             val: S,
             power: E,
             type: "greek"
-        }
+        };
     } / "#" S:("pi" / "epsilon" / "theta") {
         return {
             val: S,
             type: "greek"
-        }
+        };
     }
-
-Variable = (V: [a-zA-Z] "^" E: Expression) {
+//TODO: This is greedy, and in the python grammar, powers are least matching
+Variable = V: [a-zA-Z] E: LeastMatchingExponent {
         return {
             vars: V,
             power: E,
@@ -143,7 +176,7 @@ Variable = (V: [a-zA-Z] "^" E: Expression) {
         return {
             vars: V,
             type: 'term',
-        }
+        };
     }
 
 
@@ -153,7 +186,7 @@ Real "real"
         return {
             val: parseFloat(text(), 10),
             type: 'real',
-        } 
+        };
     }
 
 //An integer is any set of digits beginning with a digit between 1-9 
@@ -162,5 +195,5 @@ Integer "integer"
         return {
             val: parseInt(text(), 10),
             type: 'integer'
-        }
+        };
     }
