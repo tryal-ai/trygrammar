@@ -45,7 +45,7 @@ AddSubtractTail "add-subtract tail"
     }
 
 Multiplication "multiplication"
-    = (ImplicitMultiply / MultiplyDivide)
+    = (MultiplyDivide / ImplicitMultiply)
 
 MultiplyDivide "multiply-divide"
     = L: (Power / Brackets / Function / ConstantCoeffTerm) R: (MultiplyDivideTail)* {
@@ -73,11 +73,13 @@ ImplicitMultiply "implicit multiply"
     = C: (ConstantCoeffTerm) T: (Power / Function / Brackets)+ {
         return {
             terms: [C, ...T],
+            implicit: true,
             type: 'multiplication'
         };
     } / F: (Power / Function / Brackets) T: (Power / Function / Brackets)+ {
         return {
             terms: [F, ...T],
+            implicit: true,
             type: 'multiplication'
         };
     }
