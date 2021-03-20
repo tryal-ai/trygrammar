@@ -6,7 +6,7 @@ from trygrammar.constants.MultiVariableTermMatch import MultiVariableTermMatch
 class ConstantCoeffTermMatch:
     def __init__(self, powerMatch):
         self.matcher = MatchJoin([
-            MatchQuantity(ConstantMatch(), 0, 1),
+            MatchQuantity(ConstantMatch(powerMatch), 0, 1),
             MatchQuantity(MultiVariableTermMatch(powerMatch), 0, 1)
         ])
 
@@ -29,7 +29,7 @@ class ConstantCoeffTermMatch:
     
     def set_power_match(self, powerMatch):
         self.matcher = MatchJoin([
-            MatchQuantity(ConstantMatch(), 0, 1),
+            MatchQuantity(ConstantMatch(powerMatch), 0, 1),
             MatchQuantity(MultiVariableTermMatch(powerMatch), 0, 1)
         ])
 

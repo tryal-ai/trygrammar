@@ -195,7 +195,13 @@ Variable = V: [a-zA-Z] E: LeastMatchingExponent {
 
 //A Real begins with an integer or a zero, followed by a decimal
 Real "real"
-    = ("0" / Integer) "." [0-9]+ { 
+    = ("0" / Integer) "." [0-9]+ E: LeastMatchingExponent { 
+        return {
+            val: parseFloat(text(), 10),
+            power: E,
+            type: 'real',
+        };
+    } / ("0" / Integer) "." [0-9]+ { 
         return {
             val: parseFloat(text(), 10),
             type: 'real',
@@ -204,7 +210,13 @@ Real "real"
 
 //An integer is any set of digits beginning with a digit between 1-9 
 Integer "integer"
-    = ([1-9][0-9]* / "0") { 
+    = ([1-9][0-9]* / "0") E: LeastMatchingExponent { 
+        return {
+            val: parseInt(text(), 10),
+            power: E,
+            type: 'integer'
+        };
+    } / ([1-9][0-9]* / "0") { 
         return {
             val: parseInt(text(), 10),
             type: 'integer'

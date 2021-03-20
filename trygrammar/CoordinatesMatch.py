@@ -3,10 +3,10 @@ from trygrammar.constants import TermMatch
  
 
 class CoordinatesTail:
-    def __init__(self, powerMatch):
+    def __init__(self, expression):
         self.matcher = MatchJoin([
             LiteralMatch(","),
-            TermMatch(powerMatch)
+            expression
         ])
 
     def parser(self, body : str, hard_fail = True):
@@ -16,11 +16,10 @@ class CoordinatesTail:
         
         return [result[0][1], result[1]]
 
-    def set_power_match(self, powerMatch):
+    def set_power_match(self, expression):
         self.matcher = MatchJoin([
             LiteralMatch(","),
-            TermMatch(powerMatch),
-            LiteralMatch(")")
+            expression
         ])
 
     def __str__(self):
@@ -28,15 +27,16 @@ class CoordinatesTail:
 
 
 class CoordinatesMatch:
-    def __init__(self, powerMatch):
+    def __init__(self, expression):
         self.matcher = MatchJoin([
             LiteralMatch("("),
-            TermMatch(powerMatch),
-            MatchQuantity(CoordinatesTail(powerMatch), 1),
+            expression,
+            MatchQuantity(CoordinatesTail(expression), 1),
             LiteralMatch(")")
         ])
 
     def parser(self, body : str, hard_fail = True):
+        print(body)
         result = self.matcher.parser(body, hard_fail)
         if not result:
             return result
@@ -45,11 +45,11 @@ class CoordinatesMatch:
             'type': 'coordinate'
         }, result[1]]
 
-    def set_power_match(self, powerMatch):
+    def set_power_match(self, expression):
         self.matcher = MatchJoin([
             LiteralMatch("("),
-            TermMatch(powerMatch),
-            MatchQuantity(CoordinatesTail(powerMatch), 1),
+            expression,
+            MatchQuantity(CoordinatesTail(expression), 1),
             LiteralMatch(")")
         ])
     

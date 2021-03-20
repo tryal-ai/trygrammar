@@ -1,6 +1,6 @@
 from mnkytw import MatchAlternation
  
-from trygrammar.constants import TermMatch
+from trygrammar.constants import TermMatch, NegativeTermMatch
 from trygrammar.PowerMatch import PowerMatch
 from trygrammar.BracketsMatch import BracketsMatch
 from trygrammar.MultiplyDivideMatch import MultiplyDivideMatch
@@ -13,6 +13,7 @@ addSubtract = AddSubtractMatch(None)
 brackets = BracketsMatch(addSubtract)
 functions = FunctionsMatch(addSubtract)
 term = TermMatch(LeastMatchingExponent(addSubtract))
+negative_term = NegativeTermMatch(LeastMatchingExponent(addSubtract))
 
 # A power can either apply to a term, or to a bracket
 power = PowerMatch(MatchAlternation([
@@ -31,10 +32,19 @@ multiplyDivide = MatchAlternation([
             brackets
         ])
     ),
+    ImplicitMultiplyMatch(
+        MatchAlternation([
+            power,
+            functions,
+            brackets
+        ]),
+        term
+    ),
     MultiplyDivideMatch(MatchAlternation([
             power,
             brackets,
             functions,
+            negative_term,
             term
         ])
     )

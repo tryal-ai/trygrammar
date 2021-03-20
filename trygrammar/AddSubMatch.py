@@ -31,6 +31,7 @@ class AddSubTail:
 class AddSubtractMatch:
     def __init__(self, innerMatch):
         self.matcher = MatchJoin([
+            MatchQuantity(LiteralMatch("-"), 0, 1),
             innerMatch,
             MatchQuantity(AddSubTail(innerMatch), 0)
         ])
@@ -40,9 +41,16 @@ class AddSubtractMatch:
         if not result:
             return result
         
-        if len(result[0][1]) == 0:
-            return [result[0][0], result[1]]
-        terms = [result[0][0], *result[0][1]]
+        first_term = result[0][1]
+        if len(result[0][0]) > 0:
+            first_term = {
+                'type': 'negation',
+                'val': first_term
+            }
+        
+        if len(result[0][2]) == 0:
+            return [first_term, result[1]]
+        terms = [first_term, *result[0][2]]
         return [{
             'terms': terms,
             'type': 'addition'
@@ -50,6 +58,7 @@ class AddSubtractMatch:
 
     def set_inner_matcher(self, innerMatch):
         self.matcher = MatchJoin([
+            MatchQuantity(LiteralMatch("-"), 0, 1),
             innerMatch,
             MatchQuantity(AddSubTail(innerMatch), 0)
         ])
