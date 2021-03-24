@@ -24,7 +24,21 @@ LeastMatchingExponent "least matching exponent"
     }
 
 Expression "expression"
-    = L: Multiplication R: (AddSubtractTail)* {
+    = "-" L: Multiplication R: (AddSubtractTail)* {
+        if (R.length > 0) {
+            return {
+                terms: [{ 
+                    val: L
+                    type: 'negation' 
+                }, ...R],
+                type: 'addition'
+            };
+        }
+        return {
+            val: L,
+            type: 'negation' 
+        };
+    } / L: Multiplication R: (AddSubtractTail)* {
         if (R.length > 0) {
             return {
                 terms: [L, ...R],
@@ -34,14 +48,20 @@ Expression "expression"
         return L;
     }
 
-AddSubtractTail "add-subtract tail"
+AddSubtractTail
+    = (SubtractTail / AddTail)
+
+AddTail "add tail"
     = "+" T: Multiplication {
         return T;
-    } / "-" T: Multiplication {
+    }
+
+SubtractTail "subtract tail"
+    = "-" T: Multiplication {
         return {
             val: T,
             type: 'negation'
-        }
+        };
     }
 
 Multiplication "multiplication"
