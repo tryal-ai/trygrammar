@@ -19,7 +19,7 @@ EquationTail "equation tail"
     }
 
 LeastMatchingExponent "least matching exponent"
-    = "^" E: (Real / Integer / ConstantCoeffTerm / Expression) {
+    = "^" E: (Brackets / Real / Integer / ConstantCoeffTerm / Expression) {
         return E;
     }
 
