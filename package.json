@@ -1,0 +1,15 @@
+{
+  "name": "trygrammar",
+  "version": "1.0.0",
+  "description": "The TryGrammar parser, for parsing algebraic expressions in the TryGrammar syntax in Python, JavaScript and other languages. This is a group set of parsing libraries designed to maintain a consistent standard for development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "npx pegjs trygrammar.pegjs -o index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "pegjs": "^0.10.0"
+  }
+}
