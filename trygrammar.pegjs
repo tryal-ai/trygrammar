@@ -28,7 +28,7 @@ Expression "expression"
         if (R.length > 0) {
             return {
                 terms: [{ 
-                    val: L
+                    val: L,
                     type: 'negation' 
                 }, ...R],
                 type: 'addition'
