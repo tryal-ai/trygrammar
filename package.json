@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "npx pegjs trygrammar.pegjs -o index.js"
+    "compile": "npx pegjs trygrammar.pegjs -o index.js",
+    "prepare": "npm run compile"
   },
   "author": "",
   "license": "ISC",
